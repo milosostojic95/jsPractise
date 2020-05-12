@@ -53,7 +53,6 @@ Questins.prototype.displayQuestion = function() {
 
 Questins.prototype.checkAnswer = function(ans, callBack) {
     let sc; 
-
     if(ans === this.correct) {
         console.log('correct answer')
        sc = callBack(true);
