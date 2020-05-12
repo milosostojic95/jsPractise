@@ -37,67 +37,68 @@ console.log(test_prime(37));
 
 
 // question function
-
-function Questins (question,answers,correct) {
-    this.question = question;
-    this.answers = answers;
-    this.correct = correct;
-}
-
-Questins.prototype.displayQuestion = function() {
-    console.log(this.question);
-    for( i=0; i<this.answers.length; i++ ) {
-        console.log(i+':' +this.answers[i]);
+(function() {
+    function Questins (question,answers,correct) {
+        this.question = question;
+        this.answers = answers;
+        this.correct = correct;
     }
-}
 
-Questins.prototype.checkAnswer = function(ans, callBack) {
-    let sc; 
-    if(ans === this.correct) {
-        console.log('correct answer')
-       sc = callBack(true);
-    } else {
-        console.log('wrong answer');
-        sc = callBack(false);
+    Questins.prototype.displayQuestion = function() {
+        console.log(this.question);
+        for( i=0; i<this.answers.length; i++ ) {
+            console.log(i+':' +this.answers[i]);
+        }
     }
-    this.showScore(sc);
-}
 
-Questins.prototype.showScore = function(score) {
-    console.log('Your current score is: ' + score);
-    console.log('------------------------------');
-}
-
-const q1 = new Questins ('jel milos jeo?',['yes','no'], 1);
-const q2 =  new Questins ('sta je milos zavrsio?',['saobracajni','georafksi','medicina'], 0);
-const q3 = new Questins ('je l najjaci proigamer?',['yes','no'], 1);
-
-const questions = [q1,q2,q3];
-
-function score() {
-    let sc = 0;
-    return function (correct) {
-        if(correct) {
-            sc++;
-        } 
-        return sc;
+    Questins.prototype.checkAnswer = function(ans, callBack) {
+        let sc; 
+        if(ans === this.correct) {
+            console.log('correct answer')
+        sc = callBack(true);
+        } else {
+            console.log('wrong answer');
+            sc = callBack(false);
+        }
+        this.showScore(sc);
     }
-}
 
-const keepScore = score();
-
-function nextQuestion() {
-    var n = Math.floor(Math.random() * questions.length);
-    questions[n].displayQuestion();
-
-    var answer = prompt('Please select the correct answer.');
-
-
-    if(answer !== 'exit') {
-        questions[n].checkAnswer(parseInt(answer), keepScore);
-        
-        nextQuestion();
+    Questins.prototype.showScore = function(score) {
+        console.log('Your current score is: ' + score);
+        console.log('------------------------------');
     }
-}
 
-nextQuestion();
+    const q1 = new Questins ('jel milos jeo?',['yes','no'], 1);
+    const q2 =  new Questins ('sta je milos zavrsio?',['saobracajni','georafksi','medicina'], 0);
+    const q3 = new Questins ('je l najjaci proigamer?',['yes','no'], 1);
+
+    const questions = [q1,q2,q3];
+
+    function score() {
+        let sc = 0;
+        return function (correct) {
+            if(correct) {
+                sc++;
+            } 
+            return sc;
+        }
+    }
+
+    const keepScore = score();
+
+    function nextQuestion() {
+        var n = Math.floor(Math.random() * questions.length);
+        questions[n].displayQuestion();
+
+        var answer = prompt('Please select the correct answer.');
+
+
+        if(answer !== 'exit') {
+            questions[n].checkAnswer(parseInt(answer), keepScore);
+            
+            nextQuestion();
+        }
+    }
+
+    nextQuestion();
+})();
