@@ -1,19 +1,19 @@
-/*
+// 
 function isPolinrome(word) {
-    const wordCheck = word.split('');
-    console.log(wordCheck)
+    const wordSplit = word.split('');
+    const wordCheck = wordSplit.filter(word => word.trim().length > 0);
+
     for(i=0; i<wordCheck.length/2; i++) {
         if(wordCheck[i] === wordCheck[wordCheck.length-(i+1)]){
-            console.log('itns polindrome')
+            return true;
         }else{
-            console.log('not polindrome')
+            return false;
         }
-    }
-   
+    }   
 }
-isPolinrome('niin');
-
+console.log(isPolinrome('ana voli milovana'));
 // prime number function 
+
 function test_prime(n)
 {
 
@@ -33,7 +33,9 @@ function test_prime(n)
 }
 
 console.log(test_prime(37));
-*/
+
+
+
 // question function
 
 function Questins (question,answers,correct) {
@@ -49,29 +51,51 @@ Questins.prototype.displayQuestion = function() {
     }
 }
 
-Questins.prototype.checkAnswer = function(ans) {
+Questins.prototype.checkAnswer = function(ans, callBack) {
+    let sc; 
+
     if(ans === this.correct) {
         console.log('correct answer')
+       sc = callBack(true);
     } else {
-        console.log('wrong answer')
+        console.log('wrong answer');
+        sc = callBack(false);
+    }
+    this.showScore(sc);
+}
+
+Questins.prototype.showScore = function(score) {
+    console.log('Your current score is: ' + score);
+    console.log('------------------------------');
+}
+
+const q1 = new Questins ('jel milos jeo?',['yes','no'], 1);
+const q2 =  new Questins ('sta je milos zavrsio?',['saobracajni','georafksi','medicina'], 0);
+const q3 = new Questins ('je l najjaci proigamer?',['yes','no'], 1);
+
+const questions = [q1,q2,q3];
+
+function score() {
+    let sc = 0;
+    return function (correct) {
+        if(correct) {
+            sc++;
+        } 
+        return sc;
     }
 }
 
-const q1 = new Questins ('jel milos jeo?',['yes','no'],'1');
-const q2 =  new Questins ('sta je milos zavrsio?',['saobracajni','georafksi','medicina'],0);
-const q3 = new Questins ('je l najjaci proigamer?',['yes','no'],1);
-
-const questions = [q1,q2,q3];
+const keepScore = score();
 
 function nextQuestion() {
     var n = Math.floor(Math.random() * questions.length);
     questions[n].displayQuestion();
 
     var answer = prompt('Please select the correct answer.');
-    console.log(answer)
+
 
     if(answer !== 'exit') {
-        questions[n].checkAnswer(parseInt(answer));
+        questions[n].checkAnswer(parseInt(answer), keepScore);
         
         nextQuestion();
     }
